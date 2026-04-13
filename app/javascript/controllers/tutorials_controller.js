@@ -35,8 +35,17 @@ export default class extends Controller {
   }
 
   connect() {
+    // 1. Server-set auto-open (first-login flow).
     if (this.autoOpenValue && this.autoOpenValue.length > 0) {
       this.open({ params: { tourId: this.autoOpenValue } })
+      return
+    }
+    // 2. ?tutorial=<id> query param (used by the Tour Gallery's Preview button
+    //    to deep-link straight into a tour on its real page).
+    const params = new URLSearchParams(window.location.search)
+    const requested = params.get("tutorial")
+    if (requested && requested.length > 0) {
+      this.open({ params: { tourId: requested } })
     }
   }
 
