@@ -39,6 +39,18 @@ module Tutorials
       Tutorials::Registry.load_directory(tours_path.to_s) if tours_path.directory?
     end
 
+    # Make the engine's launcher helper available to host views automatically.
+    # Because the engine isolates its namespace, host controllers don't pick
+    # up Tutorials::LauncherHelper through the normal `helper :all` path, so
+    # `<%= render "tutorials/loader" %>` raises NameError on
+    # `tutorials_available_ids`. Including it on action_controller load gives
+    # every host view (including unauthenticated layouts) the helper methods.
+    initializer "tutorials.helpers" do
+      ActiveSupport.on_load(:action_controller_base) do
+        helper Tutorials::LauncherHelper
+      end
+    end
+
     # Don't auto-append the engine's db/migrate to the host app's migration
     # paths. Hosts copy migrations into their own db/migrate/ via
     # `rake tutorials:install:migrations`. The dummy app keeps its own copy
