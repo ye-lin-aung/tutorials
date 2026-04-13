@@ -1,0 +1,7 @@
+id: demo.broken
+# missing route
+title_key: tours.demo.broken.title
+steps:
+  - element: "[data-tour='x']"
+    title_key: tours.demo.broken.steps.1.title
+    body_key:  tours.demo.broken.steps.1.body

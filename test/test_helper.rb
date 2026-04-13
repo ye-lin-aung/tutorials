@@ -11,5 +11,9 @@ if ActiveSupport::TestCase.respond_to?(:fixture_paths=)
   ActiveSupport::TestCase.fixture_paths = [ File.expand_path("fixtures", __dir__) ]
   ActionDispatch::IntegrationTest.fixture_paths = ActiveSupport::TestCase.fixture_paths
   ActiveSupport::TestCase.file_fixture_path = File.expand_path("fixtures", __dir__) + "/files"
-  ActiveSupport::TestCase.fixtures :all
+  # Note: we intentionally do NOT call `fixtures :all` here. The engine ships
+  # non-ActiveRecord YAML fixtures (e.g. test/fixtures/tours/*.yml consumed by
+  # Tutorials::Registry tests) that would otherwise be misinterpreted as AR
+  # fixtures and crash the suite. Add `fixtures :foo` per-test if/when an
+  # ActiveRecord fixture is actually needed.
 end
