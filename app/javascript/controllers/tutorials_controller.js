@@ -25,7 +25,7 @@ export default class extends Controller {
     available:        Array,
     autoOpen:         String,
     progressUrl:      { type: String, default: "/tutorials/progress" },
-    tourUrlTemplate:  { type: String, default: "/tutorials/%s.json" }
+    tourUrlTemplate:  { type: String, default: "/tutorials/tours/%s" }
   }
 
   initialize() {
