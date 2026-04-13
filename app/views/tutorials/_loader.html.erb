@@ -1,0 +1,7 @@
+<%# Emits the Stimulus controller root once per layout. %>
+<div data-controller="tutorials"
+     data-tutorials-available-value="<%= tutorials_available_ids.to_json %>"
+     data-tutorials-auto-open-value="<%= tutorials_auto_open_id.to_s %>"
+     class="hidden"
+     aria-hidden="true">
+</div>

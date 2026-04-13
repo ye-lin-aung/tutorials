@@ -1,0 +1,12 @@
+<% if any_tutorials_available? %>
+  <button type="button"
+          class="ui-btn-secondary text-sm inline-flex items-center gap-1"
+          data-action="click->tutorials#open"
+          data-tutorials-tour-id-param="<%= tutorials_available_ids.first %>"
+          title="<%= t("tutorials.launcher.title", default: "Take a tour") %>">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4" aria-hidden="true">
+      <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3.5a1 1 0 100 2 1 1 0 000-2zm-.75 3.25a.75.75 0 011.5 0V14a.75.75 0 01-1.5 0v-4.25z" clip-rule="evenodd" fill-rule="evenodd"/>
+    </svg>
+    <%= t("tutorials.launcher.label", default: "Take a tour") %>
+  </button>
+<% end %>
