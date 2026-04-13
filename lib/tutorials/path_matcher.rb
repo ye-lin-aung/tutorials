@@ -34,9 +34,14 @@ module Tutorials
 
     def compile_segment(segment)
       case segment
-      when /\A:(\w+)\z/   then "/[^/]+"
-      when /\A\*(\w+)\z/  then "(?:/.*)?"
-      else "/#{Regexp.escape(segment)}"
+      when /\A:\w+\z/   then "/[^/]+"
+      when /\A\*\w+\z/  then "(?:/.*)?"
+      when /[:*]/
+        raise ArgumentError, "PathMatcher: unsupported segment #{segment.inspect}. " \
+                             "`:name` and `*name` tokens must occupy an entire path segment — " \
+                             "mixing literals with tokens (e.g. `:id.json`) is not supported."
+      else
+        "/#{Regexp.escape(segment)}"
       end
     end
   end

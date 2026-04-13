@@ -44,5 +44,19 @@ module Tutorials
       assert PathMatcher.match?("/foo.bar", "/foo.bar")
       refute PathMatcher.match?("/foo.bar", "/fooxbar")
     end
+
+    test "mixed literal and param segment raises ArgumentError" do
+      assert_raises(ArgumentError) { PathMatcher.match?("/users/:id.json", "/users/42.json") }
+      assert_raises(ArgumentError) { PathMatcher.match?("/:id-foo", "/abc-foo") }
+    end
+
+    test "mixed literal and glob segment raises ArgumentError" do
+      assert_raises(ArgumentError) { PathMatcher.match?("/prefix-*path", "/prefix-anything") }
+    end
+
+    test "error message mentions the bad segment" do
+      err = assert_raises(ArgumentError) { PathMatcher.match?("/:id.json", "/42.json") }
+      assert_match(/:id\.json/, err.message)
+    end
   end
 end
