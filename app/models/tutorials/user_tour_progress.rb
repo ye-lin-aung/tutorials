@@ -18,5 +18,10 @@ module Tutorials
       record.save!
       record
     end
+
+    def self.completed_tour_ids_for(user:, tour_ids:)
+      return [] if tour_ids.empty?
+      where(user: user, tour_id: tour_ids).where.not(completed_at: nil).pluck(:tour_id)
+    end
   end
 end
