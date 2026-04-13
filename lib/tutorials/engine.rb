@@ -18,5 +18,14 @@ module Tutorials
       loader.push_dir(lib_tutorials, namespace: Tutorials)
       loader.ignore(root.join("lib/tutorials/version.rb").to_s)
     end
+
+    # Don't auto-append the engine's db/migrate to the host app's migration
+    # paths. Hosts copy migrations into their own db/migrate/ via
+    # `rake tutorials:install:migrations`. The dummy app keeps its own copy
+    # in test/dummy/db/migrate/ so it can boot independently for tests
+    # without colliding with the engine's own migration files.
+    def append_migrations(app)
+      # no-op: hosts opt in by copying migrations explicitly
+    end
   end
 end
