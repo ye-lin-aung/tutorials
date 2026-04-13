@@ -1,0 +1,17 @@
+en:
+  tutorials:
+    launcher:
+      title: "Take a guided tour of this page"
+      label: "Take a tour"
+  tours:
+    # Add your tour title/body translation keys here.
+    # Example:
+    #
+    # student:
+    #   view_grades:
+    #     title: "View your grades"
+    #     description: "Walk through the grades page"
+    #     steps:
+    #       "1":
+    #         title: "Your grades table"
+    #         body:  "Each row is a course"
