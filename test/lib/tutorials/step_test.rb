@@ -25,6 +25,16 @@ module Tutorials
       assert_equal({ element: "x", title_key: "t", body_key: "b" }, step.to_h)
     end
 
+    test "Step instances are frozen and string values are frozen" do
+      step = Step.new(element: "x", title_key: "t", body_key: "b")
+
+      assert step.frozen?, "Step instance should be frozen"
+      assert step.element.frozen?,   "element string should be frozen"
+      assert step.title_key.frozen?, "title_key string should be frozen"
+      assert step.body_key.frozen?,  "body_key string should be frozen"
+      assert_raises(FrozenError) { step.to_h[:element] << "!" }
+    end
+
     test "#render_for_locale translates with I18n and returns client-ready payload" do
       I18n.backend.store_translations(:en, tours: { demo: { steps: { "1" => { title: "Hi", body: "Body" } } } })
 
