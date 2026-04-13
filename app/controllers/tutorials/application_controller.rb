@@ -11,19 +11,38 @@ module Tutorials
   # never fires.
   class ApplicationController < Tutorials.parent_controller_class
     protect_from_forgery with: :null_session
-    prepend_before_action :tutorials_require_current_user
+
+    # Engine controllers must NOT run the host's auth before_actions. Those
+    # callbacks tend to call `redirect_to new_session_path` (or similar)
+    # without scoping to `main_app`, and named-route resolution inside an
+    # engine controller looks at the engine's url_helpers first — which
+    # don't have host routes. The result is UrlGenerationError 500s for
+    # unauthenticated visitors. Instead we skip the host's auth callbacks
+    # (best-effort: raise:false handles hosts that don't define them) and
+    # run our own check below.
+    skip_before_action :require_authentication,  raise: false  # school-management style
+    skip_before_action :authenticate_user!,      raise: false  # Devise style
+
+    # Some hosts populate Current.user / current_user via the same auth
+    # before_action we just skipped. Call the host's session-resume helper
+    # if it exists so Current.session (and therefore Current.user) is
+    # populated for genuine logged-in visitors.
+    prepend_before_action :tutorials_resume_host_session
+    before_action         :tutorials_require_current_user
 
     private
 
+    def tutorials_resume_host_session
+      resume_session if respond_to?(:resume_session, true)
+    end
+
     def tutorials_require_current_user
-      # For HTML requests, defer to the host app's normal auth flow (which
-      # typically sets Current.user via a before_action and redirects to a
-      # login page on failure). The engine only short-circuits for JSON/API
-      # requests so they don't get redirected to a login page that has no
-      # JSON format and would 500.
-      return if request.format.html?
       return if current_user
-      render json: { error: "unauthorized" }, status: :unauthorized
+      if request.format.html?
+        redirect_to "/", allow_other_host: false
+      else
+        render json: { error: "unauthorized" }, status: :unauthorized
+      end
     end
 
     # Some host apps have a `current_user` method, others have `Current.user`,

@@ -115,14 +115,11 @@ module Tutorials
       refute_match    "teach.grade",  @response.body
     end
 
-    test "GET gallery does not enforce auth at the engine layer (host responsibility)" do
-      # The engine deliberately delegates HTML auth to the host app's normal
-      # before_action chain, since hosts know how to redirect to their own
-      # login page. Without a host auth check, the request goes through; the
-      # gallery just renders an empty list when current_user is nil.
+    test "GET gallery redirects HTML to root when not signed in" do
       sign_in_as(nil)
       get gallery_url
-      assert_response :success
+      assert_response :redirect
+      assert_redirected_to "/"
     end
   end
 end
