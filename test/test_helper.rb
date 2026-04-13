@@ -16,3 +16,17 @@ if ActiveSupport::TestCase.respond_to?(:fixture_paths=)
   # fixtures and crash the suite. Add `fixtures :foo` per-test if/when an
   # ActiveRecord fixture is actually needed.
 end
+
+module TutorialsTestAuth
+  def sign_in_as(user)
+    Thread.current[:tutorials_test_user] = user
+  end
+
+  def teardown
+    Thread.current[:tutorials_test_user] = nil
+    super
+  end
+end
+
+ActiveSupport::TestCase.include TutorialsTestAuth
+ActionDispatch::IntegrationTest.include TutorialsTestAuth

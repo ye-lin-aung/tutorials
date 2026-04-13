@@ -13,4 +13,12 @@ module Tutorials
   def self.config
     Configuration.instance
   end
+
+  def self.parent_controller_class
+    if Object.const_defined?(:ApplicationController)
+      Object.const_get(:ApplicationController)
+    else
+      ActionController::Base
+    end
+  end
 end
