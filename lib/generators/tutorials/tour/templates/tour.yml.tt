@@ -1,0 +1,11 @@
+id: <%= @tour_id %>
+route: <%= @route_pattern %>
+title_key: <%= @translation_root %>.title
+description_key: <%= @translation_root %>.description
+first_login: <%= @first_login %>
+steps:
+<% @step_count.times do |i| -%>
+  - element: "[data-tour='<%= @tour_id.tr('.', '-') %>-step-<%= i + 1 %>']"
+    title_key: <%= @translation_root %>.steps.<%= i + 1 %>.title
+    body_key:  <%= @translation_root %>.steps.<%= i + 1 %>.body
+<% end -%>

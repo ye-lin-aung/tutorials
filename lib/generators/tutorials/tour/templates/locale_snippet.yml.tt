@@ -1,0 +1,16 @@
+en:
+  tours:
+<% keys = @tour_id.split(".") -%>
+<% indent = "    " -%>
+<% keys.each_with_index do |key, idx| -%>
+<%= indent + ("  " * idx) %><%= key %>:
+<% end -%>
+<% leaf_indent = indent + ("  " * keys.size) -%>
+<%= leaf_indent %>title: "REPLACE ME — tour title"
+<%= leaf_indent %>description: "REPLACE ME — short description"
+<%= leaf_indent %>steps:
+<% @step_count.times do |i| -%>
+<%= leaf_indent %>  "<%= i + 1 %>":
+<%= leaf_indent %>    title: "REPLACE ME — step <%= i + 1 %> title"
+<%= leaf_indent %>    body:  "REPLACE ME — step <%= i + 1 %> body"
+<% end -%>
