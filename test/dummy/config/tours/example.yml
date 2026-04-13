@@ -1,0 +1,8 @@
+id: dummy.example
+route: /dashboard
+title_key: tutorials.dummy.example.title
+first_login: true
+steps:
+  - element: "[data-tour='welcome']"
+    title_key: tutorials.dummy.example.steps.1.title
+    body_key:  tutorials.dummy.example.steps.1.body

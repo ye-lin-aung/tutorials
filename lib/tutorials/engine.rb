@@ -19,6 +19,26 @@ module Tutorials
       loader.ignore(root.join("lib/tutorials/version.rb").to_s)
     end
 
+    # Load tour definitions from the host app's config/tours directory after
+    # all host initializers have run. This ensures any Tutorials.configure
+    # blocks in the host's config/initializers have already fired before we
+    # register tours. YAML parse errors deliberately surface and halt boot.
+    #
+    # Registry, Tour, Step, and PathMatcher are eagerly required here because
+    # this initializer runs before :setup_main_autoloader (Rails' Finisher
+    # sets up Zeitwerk at the end of boot). Without the requires, referencing
+    # Tutorials::Registry raises NameError since Zeitwerk's `setup` hasn't
+    # been called yet at load_config_initializers time.
+    initializer "tutorials.load_tours", after: :load_config_initializers do |app|
+      require "tutorials/path_matcher"
+      require "tutorials/step"
+      require "tutorials/tour"
+      require "tutorials/registry"
+
+      tours_path = app.root.join("config/tours")
+      Tutorials::Registry.load_directory(tours_path.to_s) if tours_path.directory?
+    end
+
     # Don't auto-append the engine's db/migrate to the host app's migration
     # paths. Hosts copy migrations into their own db/migrate/ via
     # `rake tutorials:install:migrations`. The dummy app keeps its own copy

@@ -1,0 +1,9 @@
+en:
+  tutorials:
+    dummy:
+      example:
+        title: "Welcome tour"
+        steps:
+          "1":
+            title: "Hello"
+            body: "This is a welcome step"
