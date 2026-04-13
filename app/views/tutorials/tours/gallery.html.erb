@@ -22,11 +22,10 @@
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen antialiased" style="font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;">
 
-  <%# Tutorials root: the Stimulus controller listens for `tutorials:open`. %>
-  <div data-controller="tutorials"
-       data-tutorials-available-value="[]"
-       class="hidden"
-       aria-hidden="true"></div>
+  <%# Render the engine loader partial here so the gallery picks up the
+      same Stimulus root + the engine's inline UI styling (driver.js
+      popover overrides, launcher pill, dark-mode tokens). %>
+  <%= render "tutorials/loader" %>
 
   <header class="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
