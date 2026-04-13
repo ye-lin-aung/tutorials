@@ -16,6 +16,12 @@ module Tutorials
     private
 
     def tutorials_require_current_user
+      # For HTML requests, defer to the host app's normal auth flow (which
+      # typically sets Current.user via a before_action and redirects to a
+      # login page on failure). The engine only short-circuits for JSON/API
+      # requests so they don't get redirected to a login page that has no
+      # JSON format and would 500.
+      return if request.format.html?
       return if current_user
       render json: { error: "unauthorized" }, status: :unauthorized
     end

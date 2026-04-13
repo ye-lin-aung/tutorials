@@ -95,5 +95,34 @@ module Tutorials
       assert entry, "dash.welcome should be present in the response"
       assert entry["completed"], "dash.welcome should be marked completed"
     end
+
+    test "GET gallery renders an HTML page listing every authorized tour" do
+      get gallery_url
+      assert_response :success
+      assert_equal "text/html", @response.media_type
+      assert_match "Tour Gallery", @response.body
+      assert_match "Welcome",      @response.body
+      assert_match "Grade",        @response.body
+      assert_match "dash.welcome", @response.body
+      assert_match "teach.grade",  @response.body
+    end
+
+    test "GET gallery hides tours the user is not authorized for" do
+      Tutorials.configure { |c| c.authorize_with { |_user, tour| tour.id != "teach.grade" } }
+      get gallery_url
+      assert_response :success
+      assert_match    "dash.welcome", @response.body
+      refute_match    "teach.grade",  @response.body
+    end
+
+    test "GET gallery does not enforce auth at the engine layer (host responsibility)" do
+      # The engine deliberately delegates HTML auth to the host app's normal
+      # before_action chain, since hosts know how to redirect to their own
+      # login page. Without a host auth check, the request goes through; the
+      # gallery just renders an empty list when current_user is nil.
+      sign_in_as(nil)
+      get gallery_url
+      assert_response :success
+    end
   end
 end

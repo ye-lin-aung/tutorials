@@ -1,5 +1,12 @@
 module Tutorials
   class ToursController < ApplicationController
+    def gallery
+      @tours = Registry.all
+                 .select { |t| Tutorials.config.authorized?(user: current_user, tour: t) }
+                 .sort_by(&:id)
+      render :gallery, layout: false
+    end
+
     def show
       tour = Registry.find(params[:id])
       return head :not_found unless tour
