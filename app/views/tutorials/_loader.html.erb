@@ -2,6 +2,12 @@
     UI overrides. We inline the CSS so the engine is fully self-contained
     in any host app — no asset-pipeline registration, no host stylesheet
     edits, no class collisions with the host's design system. %>
+
+<%# Driver.js base stylesheet — positioning, z-index, overlay, transitions.
+    Host layouts don't load this themselves; shipping it here guarantees
+    every page that renders the loader picks it up. %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.4.0/dist/driver.css">
+
 <div data-controller="tutorials"
      data-tutorials-available-value="<%= tutorials_available_ids.to_json %>"
      data-tutorials-auto-open-value="<%= tutorials_auto_open_id.to_s %>"

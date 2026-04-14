@@ -1,15 +1,21 @@
 <% if any_tutorials_available? %>
-  <button type="button"
-          class="tutorials-launcher"
-          data-action="click->tutorials#open"
-          data-tutorials-tour-id-param="<%= tutorials_available_ids.first %>"
-          aria-label="<%= t("tutorials.launcher.title", default: "Take a tour") %>"
-          title="<%= t("tutorials.launcher.title", default: "Take a tour") %>">
+  <%# The launcher deep-links to the current URL with ?tutorial=<id> appended.
+      On connect, the Stimulus controller picks up the query param and
+      auto-opens the tour. This works the same way whether the launcher is
+      inside or outside the controller's element (Stimulus actions only fire
+      for descendants, so we use a plain link instead). %>
+  <% _t_sep      = request.query_string.present? ? "&" : "?" %>
+  <% _t_base    = request.path %>
+  <% _t_qs      = request.query_string.present? ? "#{request.query_string}#{_t_sep}" : "" %>
+  <a href="<%= _t_base %>?<%= _t_qs %>tutorial=<%= tutorials_available_ids.first %>"
+     class="tutorials-launcher"
+     aria-label="<%= t("tutorials.launcher.title", default: "Take a tour") %>"
+     title="<%= t("tutorials.launcher.title", default: "Take a tour") %>">
     <span class="tutorials-launcher__pulse" aria-hidden="true"></span>
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="10" cy="10" r="8"/>
       <polygon points="8 6 14 10 8 14 8 6" fill="currentColor" stroke="none"/>
     </svg>
     <%= t("tutorials.launcher.label", default: "Take a tour") %>
-  </button>
+  </a>
 <% end %>
