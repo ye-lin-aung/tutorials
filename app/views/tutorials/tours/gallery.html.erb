@@ -89,8 +89,19 @@
             <div class="flex items-center gap-2 shrink-0">
               <%# Preview takes you to the tour's natural route with ?tutorial=<id>
                   appended. The tutorials Stimulus controller picks that up on
-                  page load and auto-opens the tour against the real elements. %>
-              <a href="<%= tour.route.gsub(/:\w+/, '1') %><%= tour.route.include?('?') ? '&' : '?' %>tutorial=<%= tour.id %>"
+                  page load and auto-opens the tour against the real elements.
+                  data-turbo="false" forces a full-page navigation — Turbo
+                  Drive botches the swap because the gallery's standalone
+                  layout has a different script set than the host's normal
+                  authenticated layout, and Turbo ends up reverting. %>
+              <%# Prefer an explicit preview_path (set in the tour YAML when
+                  the route has params like /courses/:slug) — otherwise fall
+                  back to a naive param substitution (param → "1") which
+                  works for simple routes. %>
+              <% _preview_path = tour.preview_path.presence || tour.route.gsub(/:\w+/, "1") %>
+              <% _preview_sep  = _preview_path.include?("?") ? "&" : "?" %>
+              <a href="<%= _preview_path %><%= _preview_sep %>tutorial=<%= tour.id %>"
+                 data-turbo="false"
                  class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                   <polygon points="5 3 19 12 5 21 5 3"/>

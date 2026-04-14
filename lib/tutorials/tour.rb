@@ -12,12 +12,12 @@ module Tutorials
     class InvalidTour < StandardError; end
 
     REQUIRED_KEYS = %w[id route title_key steps].freeze
-    OPTIONAL_KEYS = %w[description_key first_login].freeze
+    OPTIONAL_KEYS = %w[description_key first_login preview_path].freeze
     ALLOWED_KEYS  = (REQUIRED_KEYS + OPTIONAL_KEYS).freeze
 
     REQUIRED_STEP_KEYS = %w[element title_key body_key].freeze
 
-    attr_reader :id, :route, :title_key, :description_key, :steps, :source
+    attr_reader :id, :route, :title_key, :description_key, :steps, :source, :preview_path
 
     def self.load(yaml_source, source:)
       # Pre-scan for required top-level keys so that a YAML document with a
@@ -56,6 +56,7 @@ module Tutorials
       @title_key       = raw.fetch("title_key").to_s
       @description_key = raw["description_key"]&.to_s
       @first_login     = raw.fetch("first_login", false) ? true : false
+      @preview_path    = raw["preview_path"]&.to_s
       @steps           = build_steps(raw.fetch("steps")).freeze
 
       # Cache the compiled path matcher regex so repeated matches_path? calls
