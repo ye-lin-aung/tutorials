@@ -1,0 +1,47 @@
+# Archetype: five-step tour that walks a teacher through grading.
+#
+# Parallel to the `workflows` gem's teacher/grade_assignment workflow but
+# authored as a pure tutorials tour (no workflows gem needed).
+#
+# Drop this file into a host's config/tours/ to see it registered by the
+# tutorials engine at boot. The `data-tour` selectors, route, and i18n keys
+# are placeholders.
+#
+# A real tour needs matching i18n entries in
+# config/locales/tutorials.en.yml under:
+#
+#   en.tours.teacher.grade_first_assignment.{title,description}
+#   en.tours.teacher.grade_first_assignment.steps.{1..5}.{title,body}
+#
+# The `route` uses a `:slug` placeholder — Tutorials::PathMatcher compiles
+# this into a regex so the tour fires for any /gradebook/<course-slug>
+# URL. For the Tour Gallery's Preview button to land on a known-good page,
+# set `preview_path:` to a real slug from your seed data (uncomment below
+# and adjust).
+
+id: teacher.grade_first_assignment
+route: /gradebook/:slug
+# preview_path: /gradebook/algebra-i-fundamentals
+title_key: tours.teacher.grade_first_assignment.title
+description_key: tours.teacher.grade_first_assignment.description
+first_login: false
+steps:
+  - element: "[data-tour='gradebook-table']"
+    title_key: tours.teacher.grade_first_assignment.steps.1.title
+    body_key:  tours.teacher.grade_first_assignment.steps.1.body
+
+  - element: "[data-tour='gradebook-row-jordan']"
+    title_key: tours.teacher.grade_first_assignment.steps.2.title
+    body_key:  tours.teacher.grade_first_assignment.steps.2.body
+
+  - element: "[data-tour='gradebook-score-input']"
+    title_key: tours.teacher.grade_first_assignment.steps.3.title
+    body_key:  tours.teacher.grade_first_assignment.steps.3.body
+
+  - element: "[data-tour='gradebook-save']"
+    title_key: tours.teacher.grade_first_assignment.steps.4.title
+    body_key:  tours.teacher.grade_first_assignment.steps.4.body
+
+  - element: "[data-tour='gradebook-row-jordan']"
+    title_key: tours.teacher.grade_first_assignment.steps.5.title
+    body_key:  tours.teacher.grade_first_assignment.steps.5.body

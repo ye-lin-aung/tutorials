@@ -49,6 +49,11 @@ The host app interacts with the gem through a small set of entry points:
 - `Tutorials::SourceResolver.register_hook(callable)` — register a loader hook that produces tour hashes programmatically (see below).
 - `bin/rails tutorials:audit_selectors` — host-app CI task. Fails when any `data-tour` selector in registered YAML doesn't resolve in the rendered DOM for its matching route.
 
+## Examples
+
+- [`docs/EXAMPLES.md`](docs/EXAMPLES.md) — cookbook with 8 recipes: minimal and full tour YAML, the `data-tour` convention, i18n, Pundit- and role-based `authorize_with`, mounting launcher + loader, opening a tour programmatically, and writing a `SourceResolver` hook.
+- [`examples/tours/`](examples/tours/) — 2 copy-pasteable archetype YAMLs: a three-step student dashboard tour and a five-step teacher-grading tour.
+
 ## Integration with workflows gem
 
 `Tutorials::SourceResolver` unifies tour loading across multiple sources. By default it reads legacy `config/tours/*.yml` files; other gems can register a hook that contributes tour hashes programmatically. When the host mounts both `tutorials` and [`workflows`](https://github.com/ye-lin-aung/workflows), the workflows engine registers a hook at boot:

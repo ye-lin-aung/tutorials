@@ -1,0 +1,45 @@
+# Archetype: three-step student-dashboard tour.
+#
+# Drop this file into a host's config/tours/ to see it registered by the
+# tutorials engine at boot. The `data-tour` selectors, route, and i18n keys
+# are placeholders.
+#
+# A real tour needs matching i18n entries:
+#
+#   config/locales/tutorials.en.yml
+#     en:
+#       tours:
+#         student:
+#           dashboard:
+#             title: "Welcome to your dashboard"
+#             description: "..."
+#             steps:
+#               "1": { title: "...", body: "..." }
+#               "2": { title: "...", body: "..." }
+#               "3": { title: "...", body: "..." }
+#
+# Without the locale entries, the tour still loads and the popovers render the
+# raw keys — Rails' I18n default-fallback surfaces that visibly so QA catches
+# it.
+#
+# Set `first_login: true` to auto-open the tour the first time a user
+# reaches the matching route (the engine's first_login_tour_for hook
+# picks it up).
+
+id: student.dashboard
+route: /
+title_key: tours.student.dashboard.title
+description_key: tours.student.dashboard.description
+first_login: true
+steps:
+  - element: "[data-tour='dashboard-hero']"
+    title_key: tours.student.dashboard.steps.1.title
+    body_key:  tours.student.dashboard.steps.1.body
+
+  - element: "[data-tour='dashboard-stats']"
+    title_key: tours.student.dashboard.steps.2.title
+    body_key:  tours.student.dashboard.steps.2.body
+
+  - element: "[data-tour='dashboard-explore-cta']"
+    title_key: tours.student.dashboard.steps.3.title
+    body_key:  tours.student.dashboard.steps.3.body
