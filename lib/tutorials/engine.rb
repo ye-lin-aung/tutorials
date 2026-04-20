@@ -34,9 +34,16 @@ module Tutorials
       require "tutorials/step"
       require "tutorials/tour"
       require "tutorials/registry"
+      require "tutorials/source_resolver"
 
-      tours_path = app.root.join("config/tours")
-      Tutorials::Registry.load_directory(tours_path.to_s) if tours_path.directory?
+      tours_path     = app.root.join("config/tours")
+      workflows_path = app.root.join("config/workflows")
+
+      hashes = Tutorials::SourceResolver.new.load_all(
+        tours_dir:     (tours_path.directory?     ? tours_path.to_s     : nil),
+        workflows_dir: (workflows_path.directory? ? workflows_path.to_s : nil)
+      )
+      hashes.each { |h| Tutorials::Registry.register(Tutorials::Tour.load_hash(h)) }
     end
 
     # Make the engine's launcher helper available to host views automatically.

@@ -47,6 +47,24 @@ module Tutorials
       load(File.read(path), source: path)
     end
 
+    # Build a Tour from an already-parsed hash (e.g. produced by another gem
+    # that projects its own DSL into tour shape). Accepts either string or
+    # symbol keys at the top level and on each step. The :source key is
+    # optional — defaults to "<inline>".
+    def self.load_hash(hash)
+      unless hash.is_a?(Hash)
+        raise InvalidTour, "<inline>: top level must be a mapping"
+      end
+      stringified = hash.transform_keys(&:to_s)
+      if stringified["steps"].is_a?(Array)
+        stringified["steps"] = stringified["steps"].map do |s|
+          s.is_a?(Hash) ? s.transform_keys(&:to_s) : s
+        end
+      end
+      source = stringified.delete("source") || "<inline>"
+      new(stringified, source: source)
+    end
+
     def initialize(raw, source:)
       @source = source.to_s
       validate_top_level!(raw)
